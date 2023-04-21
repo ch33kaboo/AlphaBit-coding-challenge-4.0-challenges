@@ -1,0 +1,55 @@
+Statement:
+a string is a sherlock string if all characters of the string appear the same number of times. It is also valid if he can remove just  character at  index in the string, and the remaining characters will occur the same number of times. Given a string , determine if it is valid. If so, return YES, otherwise return NO.
+
+Example
+str="leo"
+is a sherlock string 
+str="aabc"
+is also a sherlock string because when we omit the letter a we got 1 occurence for "a" so is valid.
+
+
+INPUT: string;
+OUTPUT : boolean: true if the string is valid else false if not
+
+
+
+SOLUTION:implemented with java
+
+public static void main(String []args){
+        Scanner scan=new Scanner(System.in);
+        String str=scan.next();
+        int i;
+        for(i=0;i<str.length();i++){
+            boolean isvalid=isValid(str,str.charAt(i), i);
+            if(!isvalid){
+                break;
+            }
+
+        }
+        if(i==str.length()){
+            System.out.println(true);
+        }else{
+            System.out.println(false);
+        }
+    }
+    public static boolean isValid(String s,char c,int originIndex){
+       int i=0;
+       System.out.println("achahhh");
+       int cpt=0;
+       while(i<s.length()){
+        if(s.charAt(i)==c && i!=originIndex){
+            cpt=cpt+1;
+        }
+        i=i+1;
+        
+       }
+
+       System.out.println("l7ahha");
+     
+       if(cpt>1){
+        return false;
+       }
+       else {
+        return true;
+       }
+    }

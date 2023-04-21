@@ -1,0 +1,35 @@
+Statement:
+Find how to write a given integer N as a sum of power natural numbers and 
+each item can also be expressed as power of other natural nums.
+Note: the power is 2.
+example :
+N=10=(3² + 1²)
+N=100=(3²+1)²
+N=458=(21²+17)=(4²+5+17)=((2²)²+5+17)=((2²)²+2²+1+17)=((2²)²+2²+1+4²+1)=((2²)²+2²+(2²)²+2)
+
+Input=integer n positive
+Output=array of powered nums and others not powered nums
+Example of N=458
+array1=[21, 4, 2, 2, 4, 2]
+array2=[5.0, 1.0, 17.0, 1.0]
+
+
+Solution:
+from math import *
+array1=[];
+array2=[];
+def findRacines(n):
+    if(n==0 or n==1 or n==2 or n==3):
+        return str(n)
+    else:
+        a=int(sqrt(n))
+        b=n-pow(a,2)
+        array1.append(a);
+        findRacines(a);
+        if(b!=0):
+            array2.append(b)
+            findRacines(b)
+findRacines(458)
+
+print(array1)
+print(array2)
