@@ -1,9 +1,4 @@
-with open('input.txt', 'r') as f:
-    n = int(f.readline())
-    events = list(map(int, f.readline().split()))
-
-
-def solve(events):
+def solve(n, events):
     if len(events) % 2  == 1 : return -1 ,[-1] #wahed dkhal w makhrejch
     stack =[]  # people entering and leaving in the current day 
     day =[]   # number of people in the office in the current day
@@ -35,5 +30,6 @@ def solve(events):
 
     return len(oute), oute_index
 
-
+n = 6
+events = []
 n , sol = solve(n, events)
