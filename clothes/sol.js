@@ -1,19 +1,19 @@
-const solve = (n, m,) => {
+const solve = (first, pricesString, matches) => {
+  const [n, m] = first.split(' ').map(Number)
   if (n < 3 || m < 3) {
-    return 'error'
+    return -1
   }
-  let prices = f.readline().split(' ').map(Number)
-  let matching_costs = Array.from({ length: n }, () =>
+  const prices = pricesString.split(' ').map(Number)
+  const matching_costs = Array.from({ length: n }, () =>
     Array.from({ length: n }, () => Infinity)
   )
   for (let i = 0; i < m; i++) {
-    let [a, b] = f.readline().split(' ').map(Number)
+    const [a, b] = matches[i].split(' ').map(Number)
     matching_costs[a - 1][b - 1] = matching_costs[b - 1][a - 1] = Math.min(
       prices[a - 1],
       prices[b - 1]
     )
   }
-
   let min_cost = Infinity
   for (let i = 0; i < n; i++) {
     for (let j = i + 1; j < n; j++) {
@@ -30,7 +30,6 @@ const solve = (n, m,) => {
       }
     }
   }
-
   if (min_cost == Infinity) {
     return -1
   } else {
@@ -38,4 +37,8 @@ const solve = (n, m,) => {
   }
 }
 
-console.log(Infinity)
+const first = '3 2'
+const pricesString = '2 3 4'
+const matches = ['2 3', '2 1']
+
+console.log(solve(first, pricesString, matches))
