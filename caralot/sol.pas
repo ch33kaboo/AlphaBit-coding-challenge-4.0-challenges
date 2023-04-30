@@ -6,11 +6,6 @@ TYPE
         res: IntList;
         end;
 
-VAR 
-    
-
-    nString, events: string;
-
 PROCEDURE removeFromArray(var arr: IntList; 
     val: integer);
     VAR
@@ -23,7 +18,7 @@ PROCEDURE removeFromArray(var arr: IntList;
                 BEGIN
                     arr[j] := arr[j+1];
                 END;
-                SetLength(arr, Length(arr)-1)
+                SetLength(arr, Length(arr)-1);
                 break;
             END;
     END;
@@ -33,25 +28,34 @@ FUNCTION IsValueInArray(arr: IntList; value: integer): boolean;
     i: integer;
     BEGIN
         for i := 0 to High(arr) do
-            if arr[i] = value then IsValueInArray := true;
+            if arr[i] = value then 
+                BEGIN
+                    IsValueInArray := true;
+                    exit;
+                END;
         IsValueInArray := false;
     END;
     
 FUNCTION solve(nString:string; events:string): ResultType;
-    BEGIN
         VAR
-            stack, day, done, oute_index : IntList;
-            event, n: integer;
+            stack, day, done: IntList;
+            event, n, i: integer;
             eventStr: string;
+            result : ResultType;
         BEGIN
             Val(nString, n);
-
-            if(n mod 2 = 1) print()
-
+            SetLength(result.res, 0);
+            if(n mod 2 = 1) then
+                BEGIN
+                    result.len := -1;
+                    SetLength(result.res, 1);
+                    result.res[0] := -1;
+                    solve := result;
+                    exit;
+                END;
             SetLength(stack, 0);
             SetLength(day, 0);
             SetLength(done, 0);
-            SetLength(oute_index, 0);
 
             eventStr := '';
             for i := 1 to Length(events) do
@@ -60,44 +64,60 @@ FUNCTION solve(nString:string; events:string): ResultType;
                     BEGIN
                         if i = Length(events) then
                             eventStr := eventStr + events[i];
-                            
-                        event := StrToInt(eventStr);
+                        
+                        Val(eventStr, event);
                         { Do something with the integer value }
-                        if(!IsValueInArray(done, event)) then
-                            if (event>0 and !IsValueInArray(day, event)) then
+                        if(not(IsValueInArray(done, event))) then
+                            if (event>0) and not(IsValueInArray(day, event)) then
                                 BEGIN
                                     SetLength(day, length(day)+1);
-                                    day[High(day)] := e;
+                                    day[High(day)] := event;
                                     SetLength(stack, length(stack)+1);
-                                    stack[High(stack)] := e;
-                                END;
-                            else if (event<0 and IsValueInArray(day, -event)) then
+                                    stack[High(stack)] := event;
+                                END
+                            else if (event<0) and IsValueInArray(day, -event) then
                                 BEGIN
                                     removeFromArray(day, -event);
                                     SetLength(stack, length(stack)+1);
-                                    stack[High(stack)] := e;
+                                    stack[High(stack)] := event;
                                     SetLength(done, length(done)+1);
-                                    done[High(done)] := -e;
+                                    done[High(done)] := -event;
                                     if(length(day)=0) then
                                         BEGIN
-                                            SetLength(oute_index, length(oute_index)+1);
-                                            oute_index[High(oute_index)] := length(stack);
+                                            SetLength(result.res, length(result.res)+1);
+                                            result.res[High(result.res)] := length(stack);
                                             SetLength(stack, 0);
                                             SetLength(day, 0);
                                             SetLength(done, 0);
                                         END;
+                                END
+                            else
+                                BEGIN
+                                    result.len := -1;
+                                    SetLength(result.res, 1);
+                                    result.res[0] := -1;
+                                    solve := result;
+                                    exit;
                                 END;
-                            else 
                         eventStr := '';
                     END
                 else eventStr := eventStr + events[i];  
             END;
+            result.len := length(result.res);
+            solve := result;
         END;
-    END;
 
-
+VAR 
+    result : ResultType;
+    nString, events: string;
+    i: integer;
 BEGIN
     readln(nString);
     readln(events);
     
+    result := solve(nString, events);
+    writeln(result.len);
+    for i := 0 to High(result.res) do
+        write(result.res[i], ' ');
+    writeln()
 END.
