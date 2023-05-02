@@ -8,4 +8,12 @@ function optimal(net) {
 }
 
 //result
-console.log(optimal(resistances));
+let rl = require('readline').createInterface({
+  input: process.stdin,
+  output: process.stdout
+});
+
+rl.question("", (resistances) => {
+	console.log(optimal(resistances));
+   rl.close();
+});
