@@ -40,4 +40,12 @@ function toArrayOfBytes(str) {
     return arr;
 }
 
-console.log(toArrayOfBytes(volumes));
+let rl = require('readline').createInterface({
+    input: process.stdin,
+    output: process.stdout
+  });
+  
+rl.question("", (volumes) => {
+    console.log(toArrayOfBytes(volumes));
+    rl.close();
+});
