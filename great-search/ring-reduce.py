@@ -1,4 +1,3 @@
-
 class process:
     def __init__(self, rank : int, data : list, cache:int):
         self.rank  = rank
@@ -87,10 +86,10 @@ def ring_all_reduce(function, process_dict : dict):
     
     return pr_list
 
-workers_list = [{'rank': 3, 'data': [9, 81, 98, 33]},
- {'rank': 2, 'data': [94, 29, 55, 56]},
- {'rank': 0, 'data': [80, 38, 94, 22]},
- {'rank': 1, 'data': [81, 71, 36, 45]}]
+workers_list = [{'rank': 3, 'data': [9, 81, 98, 33]}, #'3 4 9 81 98 33'
+ {'rank': 2, 'data': [94, 29, 55, 56]}, #'2 4 94 29 55 56'
+ {'rank': 0, 'data': [80, 38, 94, 22]}, #'0 4 80 38 94 22'
+ {'rank': 1, 'data': [81, 71, 36, 45]}] #'1 4 81 71 36 45'
 
 def fn(a, b):
     return a+b
