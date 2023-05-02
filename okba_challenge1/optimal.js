@@ -50,4 +50,12 @@ function stupid (str) {
 }
 
 //result
-console.log(stupid(myString));
+let rl = require('readline').createInterface({
+    input: process.stdin,
+    output: process.stdout
+  });
+  
+rl.question("", (myString) => {
+    console.log(stupid(myString));
+    rl.close();
+});
