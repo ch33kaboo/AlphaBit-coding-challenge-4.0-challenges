@@ -1,57 +1,50 @@
-import time
+#import time
 
-def findEscape(x:int ,y:int):
+def solve(x:int ,y:int):
     visit[x][y] = 1
 
     if((x==0)or(x==n_row-1)or(y==0)or(y==n_col-1)): #check if current position is possible escape
         return f"{x},{y}"
 
     if(maze[x-1][y]=="1" and visit[x-1][y]==0 ): #check if element on top is free and not visited
-        neighborEscape = findEscape(x-1, y)
+        neighborEscape = solve(x-1, y)
         if(neighborEscape):
             return f"{x},{y}-"+neighborEscape
 
     if(maze[x][y+1]=="1" and visit[x][y+1]==0): #check if element on right is free and not visited
-        neighborEscape2 = findEscape(x, y+1)
+        neighborEscape2 = solve(x, y+1)
         if(neighborEscape2):
             return f"{x},{y}-"+neighborEscape2
 
     if(maze[x+1][y]=="1" and visit[x+1][y]==0): #check if element under is free and not visited
-        neighborEscape3 = findEscape(x+1, y)
+        neighborEscape3 = solve(x+1, y)
         if(neighborEscape3):
             return f"{x},{y}-"+neighborEscape3
 
     if(maze[x][y-1]=="1" and visit[x][y-1]==0): #check if element on left is free and not visited
-        neighborEscape4 = findEscape(x, y-1)
+        neighborEscape4 = solve(x, y-1)
         if(neighborEscape4):
             return f"{x},{y}-"+neighborEscape4
 
     return ""
 
 
-#data
-n_row = 5
-n_col = 6
 
-#1 for free and 0 for a wall
-#input_maze = "0 1 0 1 1 1 0 1 0 1 0 1 1 0 0 1 1 0 0 1 1 0 0 1 0"
-input_maze = "0 0 1 0 1 1 0 1 0 1 0 1 0 0 1 1 0 0 0 1 1 0 0 1 0 1 0 0 1 0"
-x0 = 2
-y0 = 3
+n_row = input()
+n_col = input()
+input_maze = input()
+x0 = input()
+y0 = input()
 
 
-
-start = time.time()
-lst = input_maze.split()
-
-""" maze = [[0]*n_col for _ in range(n_row)]
-visit = [[0]*n_col for _ in range(n_row)]
-for i in range(n_row):
-    for j in range(n_col):
-        maze[i][j] = lst[i*n_col+j] #0 for not visited and 1 for visited """
-# second method of itterating
-maze = [[lst[i+j] for j in range(n_col)] for i in range(0, n_row*n_col, n_col)]
+#start = time.time()
+n_row = int(n_row)
+n_col = int(n_col)
+x0 = int(x0)
+y0 = int(y0)
+input_maze = input_maze.split()
+maze = [[input_maze[i+j] for j in range(n_col)] for i in range(0, n_row*n_col, n_col)]
 visit = [[0 for j in range(n_col)] for i in range(0, n_row*n_col, n_col)]
-print("escape : ",findEscape(x0,y0))
-end = time.time()-start
-print("exec time ", end)
+print(solve(x0,y0))
+#end = time.time()-start
+#print("exec time ", end)
