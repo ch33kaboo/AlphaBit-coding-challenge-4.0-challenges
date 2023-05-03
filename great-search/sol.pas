@@ -1,17 +1,49 @@
 program sol;
 
-TYPE
-    IntList = array of integer;
-    Process = record
-        rank: integer;
-        data: IntList;
-        cache: integer;
-    end;
-    WorkersType = record
-        processList : array of Process;
-    end;
+VAR
+    caches: array of longint;
+    datas: array of array of longint;
+    max_itter, total, i, j, data_length, rank, temp2 : integer;
+    temp, line, operande: string;
 
-FUNCTION countNegOnes(arr: array of integer): integer;
+FUNCTION max(a, b: longint): longint;
+    BEGIN
+        if a > b then
+            max := a
+        else
+            max := b;
+    END;
+
+FUNCTION min(a, b: longint): longint;
+    BEGIN
+        if a < b then
+            min := a
+        else
+            min := b;
+    END;
+
+FUNCTION fn(a, b: longint): longint;
+    BEGIN
+        case operande of
+            '*': fn := a * b;
+            '+': fn := a + b;
+            'max': fn := max(a, b);
+            'min': fn := min(a, b);
+        end;
+    END;
+
+FUNCTION calc(a,b: longint):longint;
+    BEGIN
+        if (a<0) then
+            BEGIN
+                calc := a+b;
+                exit;
+            END;
+        calc := a;
+    END;
+
+
+FUNCTION countNegOnes(arr: array of longint): integer;
     VAR
     i, count: integer;
     BEGIN
@@ -22,19 +54,19 @@ FUNCTION countNegOnes(arr: array of integer): integer;
         CountNegOnes := count;
     END;
 
-FUNCTION isEqualProcesses(a, b: Process): Boolean;
+FUNCTION isEqualProcesses(a, b: integer): boolean;
     VAR 
         i:integer;
     BEGIN
-        if ((a.rank <> b.rank) or (Length(a.data) <> Length(b.data))) or (a.cache <> b.cache) then
+        if ((Length(datas[a]) <> Length(datas[b]))) or (caches[a] <> caches[b]) then
             BEGIN
                 isEqualProcesses := false;
                 exit;
             END;
 
-        for i := 0 to High(a.data) do
+        for i := 0 to High(datas[a]) do
             BEGIN
-                if a.data[i] <> b.data[i] then
+                if datas[a][i] <> datas[b][i] then
                     BEGIN
                         isEqualProcesses := false;
                         exit;
@@ -43,151 +75,114 @@ FUNCTION isEqualProcesses(a, b: Process): Boolean;
         isEqualProcesses := true;
     END;
 
-FUNCTION getWorker(workers: WorkersType; rank: Integer): integer;
-    VAR
-        i: Integer;
+PROCEDURE sendToNext(currentProcessRank, dest_rank, dataIndex:integer);
     BEGIN
-        for i := 0 to High(workers.processList) do
-            if workers.processList[i].rank = rank then
-                BEGIN
-                    getWorker := i;
-                    exit;
-                exit;
-            END;
-        getWorker := -1
+    caches[dest_rank] := datas[currentProcessRank][dataIndex];
+    datas[currentProcessRank][dataIndex] := -1;  // assume -1 means no data
     END;
 
-FUNCTION createWorkers(): WorkersType;
-    VAR
-        total: integer;
-        i, j, rank, data_length: integer;
-        workers: WorkersType;
-    begin
-        readln(total);
-        SetLength(workers.processList, total);
-        for i := 0 to total-1 do
-        BEGIN
-            read(rank);
-            workers.processList[i].rank := rank;
-            read(data_length);
-            SetLength(workers.processList[i].data, data_length);
-            for j := 0 to data_length-1 do
-                read(workers.processList[i].data[j]);
-            workers.processList[i].cache := workers.processList[i].data[rank]
-        END;
-        createWorkers := workers;
-    end;
-
-PROCEDURE sendToNext(var workers: WorkersType; var currentProcess: Process; dest_rank, dataIndex: Integer);
-    VAR
-        nextWorkerIndex: integer;
+PROCEDURE share(currentProcessRank, dest_rank, dataIndex:integer);
     BEGIN
-    nextWorkerIndex := getWorker(workers, dest_rank);
-    workers.processList[nextWorkerIndex].cache := currentProcess.data[dataIndex];
-    currentProcess.data[DataIndex] := -1;  // assume -1 means no data
+        datas[dest_rank][dataIndex] := datas[currentProcessRank][dataIndex];
     END;
 
-FUNCTION recv(currentProcess: Process): integer;
-    BEGIN
-    recv := currentProcess.cache;
-    END;
-
-PROCEDURE share(var workers: WorkersType; var currentProcess: Process; dest_rank, dataIndex: Integer);
+PROCEDURE solve();
     VAR
-        nextWorkerIndex: integer;
+        j, rank, right, temp, current_itter: integer;
+        bool: boolean;
     BEGIN
-        nextWorkerIndex := getWorker(workers, dest_rank);
-        workers.processList[nextWorkerIndex].data[dataIndex] := currentProcess.data[dataIndex];
-    END;
-
-FUNCTION solve(workers: WorkersType): WorkersType;
-    VAR
-        size, j, k, r, rank, right, idx, p, temp, first_p: integer;
-        all_reduced, shared: boolean;
-        recieved: integer;
-    BEGIN
-    size := length(workers.processList);
-    all_reduced := false;
-    shared := false;
+    bool := false;
     j := 0;
-
-    //writeln('========Share-reduce phase========');
-    while not all_reduced do
+    current_itter := 0;
+    while (not bool)and(current_itter<max_itter) do
         BEGIN
-            for r := 0 to size-1 do
+            current_itter := current_itter +1;
+            for rank := 0 to total-1 do
                 BEGIN
-                    p := getWorker(workers, r);
-                    rank := workers.processList[p].rank;
-                    right := (rank + 1) mod size;
-                    temp := getWorker(workers, right);
-                    sendToNext(workers, workers.processList[temp], right, rank-j);
+                    right := (rank + 1) mod total;
+                    sendToNext(rank, right, calc(rank-j, data_length));
                     if rank <> 0 then
                         BEGIN
-                            temp := getWorker(workers, rank-1);
-                            recieved := recv(workers.processList[temp]);
-                            //writeln('worker ', r, ' ', recieved, '+', workers.processList[p].data[rank-j-1]);
-                            workers.processList[p].data[rank-j-1] := recieved + workers.processList[p].data[rank-j-1];
-                            //writeln(p.data);
+                            datas[rank][calc(rank-j-1, data_length)] := fn(caches[rank], datas[rank][calc(rank-j-1, data_length)]);
                         END;
-                    if rank = size-1 then
+                    if rank = total-1 then
                         BEGIN
-                            first_p := getWorker(workers, 0);
-                            recieved := recv(workers.processList[first_p]);
-                            //writeln('worker ', first_p.rank, ' ', recieved, '+', first_p.data[0-j-1]);
-                            workers.processList[first_p].data[0-j-1] := recieved + workers.processList[first_p].data[0-j-1];
-                            //writeln(first_p.data);
+                            datas[0][calc(0-j-1, data_length)] := fn(caches[0], datas[0][calc(0-j-1, data_length)]);
                         END;
-                    all_reduced := (Length(workers.processList[p].data)-1 = countNegOnes(workers.processList[p].data));
+                    bool := (countNegOnes(datas[rank]) = data_length-1);
                 END;
             j += 1;
-            //writeln('========================');
         END;
 
-    // Share-only phase
-    //writeln('========Share-only phase========');
-    k := 0;
-    while not shared do
+    bool := false;
+    j := 0;
+    while (not bool)and(current_itter<max_itter) do
         BEGIN
-{             for r := 0 to size-1 do
+            current_itter := current_itter +1;
+            for rank := 0 to total-1 do
                 BEGIN
-                    p := getWorker(workers, r);
-                    writeln('worker ', r, ': ', p.data);
-                END; }
-            for r := 0 to size-1 do
-                BEGIN
-                p := getWorker(workers, r);
-                rank := workers.processList[p].rank;
-                right := (rank + 1) mod size;
-                idx := (rank+1-k) mod Length(workers.processList[p].data);
-                temp := getWorker(workers, right);
-                share(workers, workers.processList[p], right, idx);
+                    right := (rank + 1) mod total;
+                    temp := calc(rank-j+1, data_length) mod data_length;
+                    share(rank, right, temp);
                 END;
-            shared := (countNegOnes(workers.processList[p].data) = 0);
-            k += 1;
-            //writeln('========================');
+            bool := (countNegOnes(datas[rank]) = 0);
+            j += 1;
         END;
-    solve := workers;
     END;
 
-PROCEDURE printSolution(workers: WorkersType);
+PROCEDURE printSolution();
     VAR 
-        i, j: integer;
+        i, j: longint;
     BEGIN
-        for i := 0 to High(workers.processList) do
+        for i := 0 to total-1 do
             BEGIN
-                write(workers.processList[i].rank, ' ');
-                for j := 0 to High(workers.processList[i].data) do
-                    write(workers.processList[i].data[j], '-');
-                writeln()
+                write(i);
+                for j := 0 to High(datas[i]) do
+                    write(' ',datas[i][j]);
+                writeln();
             END;
+        
     END;
 
-VAR
-    input, result: WorkersType;
+
 BEGIN
-    input := createWorkers();
-    printSolution(input);
+    readln(operande);
+    readln(max_itter);
+    readln(total);
+
+    SetLength(caches, total);
+    SetLength(datas, total);
+    for j := 0 to total-1 do
+        BEGIN
+            rank := -1;
+            readln(line);
+            temp := '';
+            for i := 1 to Length(line) do
+                if (line[i] = ' ') or (i = Length(line)) then
+                    BEGIN
+                        if i = Length(line) then 
+                            temp := temp + line[i];
+                        Val(temp, temp2);
+                        if(rank = -1) then
+                            BEGIN
+                                rank := temp2;
+                                SetLength(datas[rank], 0);
+                            END
+                        else 
+                            BEGIN
+                                SetLength(datas[rank], Length(datas[rank])+1);
+                                datas[rank][High(datas[rank])] := temp2;
+                            END;
+                        temp := '';
+                    END
+                else temp := temp + line[i];
+            caches[rank] := datas[rank][rank];
+        END;
+    data_length := Length(datas[0]);
+
     writeln('------------------------------------------');
-    result := solve(input);
-    printSolution(result);
+    printSolution();
+    writeln('------------------------------------------');
+    solve();
+    printSolution();
 END.
