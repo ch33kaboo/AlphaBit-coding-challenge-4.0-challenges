@@ -14,18 +14,18 @@ int main()
 
     // read input into array
     int arr[32];
-    int last_free_index = 0;
-    int num;
-    while (scanf("%d", &num) == 1) {
-        arr[last_free_index] = num;
-        last_free_index++;
+    int arr_length = 0;
+    char c;
+    while (scanf("%d%c", &arr[arr_length], &c) == 2) {
+        arr_length++;
+        if (c == '\n') break;
     }
 
     // solution
-    for (int i=0; i < last_free_index - 1; i++) {
+    for (int i = 0; i < arr_length; i++) {
         if (arr[i] > target) continue;
         
-        for (int j=i+1; j < last_free_index; j++) {
+        for (int j=i+1; j < arr_length; j++) {
             if (arr[i] + arr[j] == target) printf("%d %d\n", i, j);
         }
     }
