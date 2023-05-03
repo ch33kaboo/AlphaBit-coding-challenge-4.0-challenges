@@ -36,9 +36,11 @@ void remove_item(int* arr, int* nb_arr, int target) {
 int main()
 {
     // input
-    int nb_events = 8;
-    int events[] = {1, -1, 1, 2, -1, -2, 3, -3};
-
+    int nb_events;
+    scanf("%d", &nb_events);
+    int events[nb_events];
+    for (int i = 0; i < nb_events; i++)
+        scanf("%d", &events[i]);
     // solution
 
     if (nb_events % 2 == 1) { // car entered but never left
