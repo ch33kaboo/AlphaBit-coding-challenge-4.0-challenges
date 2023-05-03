@@ -22,12 +22,14 @@ char *strrev(char *output, char *input)
     }
 }
 
-bool checkHorizontal(char matrix[MATRIX_ROWS][MATRIX_COLS+1], char *target, int row)
+bool checkHorizontal(int dim_row, int dim_col, char matrix[dim_row][dim_col+1], char *target, int row)
 {
-    char right[MATRIX_COLS* 2 + 1] = "";
-    char left[MATRIX_COLS * 2 + 1] = "";
-    char reversed_str[MATRIX_COLS+1];
-
+    char right[dim_col* 2 + 1];
+    char left[dim_col * 2 + 1];
+    char reversed_str[dim_col+1];
+    strcpy(right, ""); // init value, if this line is omitted this variable will be filled with garbage in line35
+    strcpy(left, "");
+    strcpy(reversed_str, ""); 
     strrev(reversed_str, matrix[row]);
 
     // make a double copy to emulate "snake" grid behaviour
@@ -39,21 +41,26 @@ bool checkHorizontal(char matrix[MATRIX_ROWS][MATRIX_COLS+1], char *target, int 
     return strstr(right, target) || strstr(left, target);
 }
 
-void getColumn(char *s, char matrix[MATRIX_ROWS][MATRIX_COLS+1], int col)
+void getColumn(char *s, int dim_row, int dim_col, char matrix[dim_row][dim_col+1], int col)
 {
-    for (int i = 0; i < MATRIX_ROWS; i++)
+    for (int i = 0; i < dim_row; i++)
     {
         strncat(s, &matrix[i][col], 1);
     }
 }
 
-bool checkVertical(char matrix[MATRIX_ROWS][MATRIX_COLS+1], char *target, int col)
+bool checkVertical(int dim_row, int dim_col, char matrix[dim_row][dim_col], char *target, int col)
 {
-    char up[MATRIX_ROWS*2 + 1] = "";
-    char down[MATRIX_ROWS*2 + 1] = "";
-    char col_s[MATRIX_ROWS+1] = "";
-    getColumn(col_s, matrix, col);
-    char reversed_str[MATRIX_ROWS+1];
+    char up[dim_col*2 + 1];
+    char down[dim_col*2 + 1];
+    char col_s[dim_col+1];
+    strcpy(down, "");
+    strcpy(up, "");
+    strcpy(col_s, "");
+
+    getColumn(col_s, dim_row, dim_col, matrix, col);
+
+    char reversed_str[dim_col+1];
     strrev(reversed_str, col_s);
 
     sprintf(down, "%s%s", col_s, col_s);
@@ -63,14 +70,20 @@ bool checkVertical(char matrix[MATRIX_ROWS][MATRIX_COLS+1], char *target, int co
 
 int main(int argc, char const *argv[])
 {
-    char *target_word = "plpplpp";
-    char matrix[MATRIX_ROWS][MATRIX_COLS+1] = {"haalp", "bitcl", "ubsup"};
+    char target_word[100];
+    int rows, cols;
+    scanf("%s", target_word);
+    scanf("%d %d", &rows, &cols);
 
+    char matrix[rows][cols+1];
+
+    for (int i = 0; i < rows; i++)
+        scanf("%s", matrix[i]);
+    
     // solution
-
-    for (int i = 0; i < MATRIX_ROWS; i++)
+    for (int i = 0; i < rows; i++)
     {
-        if (checkHorizontal(matrix, target_word, i))
+        if (checkHorizontal(rows, cols, matrix, target_word, i))
         {
             printf("row %d\n", i + 1);
             exit(0);
@@ -79,7 +92,7 @@ int main(int argc, char const *argv[])
 
     for (int i = 0; i < MATRIX_COLS; i++)
     {
-        if (checkVertical(matrix, target_word, i))
+        if (checkVertical(rows, cols,matrix, target_word, i))
         {
             printf("col %d\n", i + 1);
             exit(0);
