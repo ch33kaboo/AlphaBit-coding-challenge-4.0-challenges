@@ -1,3 +1,4 @@
+import sys
 
 class process:
     def __init__(self, rank : int, data : list, cache:int):
@@ -35,15 +36,18 @@ class workers:
     
         
     
-def ring_all_reduce(function, process_dict : dict):
+def ring_all_reduce(function, process_dict : dict, max_iter : int):
     pr_list = workers(process_dict=process_dict)
     size = pr_list.size
     all_reduced = False
     shared = False
     j = 0
+    itr = 0
     
     print("="*8+"Share-reduce phase"+"="*8)
-    while not all_reduced:
+    while not all_reduced and itr < max_iter:
+        itr += 1
+        print(f"iteration : {itr}")
         for r in range(size):
             p = pr_list.get_worker(r)
             rank = p.rank
@@ -68,17 +72,18 @@ def ring_all_reduce(function, process_dict : dict):
     # Share-only phase
     print("="*8+"Share-only phase"+"="*8)
     k=0
-    while not shared:
-        for r in range(size):
-            pr = pr_list.get_worker(r)
-            print(f'worker {r}: {pr.data}')
+    while not shared and itr < max_iter:
+        itr += 1
+        print(f"iteration : {itr}")
         for r in range(size):
             p = pr_list.get_worker(r)
             rank = p.rank
             right = (rank + 1) % size
             idx = (rank+1-k) % len(p.data)
             pr_list.share(p, dest=right, index=idx)
-
+        for r in range(size):
+            pr = pr_list.get_worker(r)
+            print(f'worker {r}: {pr.data}')
 
         shared = all(val is not None for val in p.data)
             # print(shared)
@@ -87,18 +92,37 @@ def ring_all_reduce(function, process_dict : dict):
     
     return pr_list
 
-workers_list = [{'rank': 3, 'data': [9, 81, 98, 33]},
- {'rank': 2, 'data': [94, 29, 55, 56]},
- {'rank': 0, 'data': [80, 38, 94, 22]},
- {'rank': 1, 'data': [81, 71, 36, 45]}]
 
-def fn(a, b):
-    return a+b
+def main():
+    # redirect the standard input to a file
+    sys.stdin = open('/Users/abdelkrimzitouni/coding-challenge-4.0-challenges/great-search/input.txt', 'r')
 
-p_list = ring_all_reduce(fn, workers_list)
-print("\n"+"="*8+"Results"+"="*8)
-for r in range(len(p_list.list)):
-    p = p_list.get_worker(r)
-    print(f'worker {r}: {p.data}')
+    max_iter = int(input())
+    # read in the number of arrays
+    n = int(input())
+
+    # allocate memory for the arrays
+    workers_list = []
+    # read in each array
+    for i in range(n):
+        # read in the array length and values
+        m, *values = map(int, input().split())
+        # add the array to the list of arrays
+        workers_list.append({})
+        workers_list[i]['rank'] = m
+        workers_list[i]['data'] = values
+
+    def fn(a, b):
+        return a+b
+
+    p_list = ring_all_reduce(fn, workers_list, max_iter)
+    print("\n"+"="*8+"Results"+"="*8)
+    for r in range(len(p_list.list)):
+        p = p_list.get_worker(r)
+        print(f'worker {r}: {p.data}')
+
+if __name__ == "__main__":
+    main()
+
 
 
