@@ -158,10 +158,7 @@ BEGIN
             caches[rank] := datas[rank][rank];
         END;
     data_length := Length(datas[0]);
-
-    writeln('------------------------------------------');
-    printSolution();
-    writeln('------------------------------------------');
+    
     solve();
     printSolution();
 END.
