@@ -5,17 +5,17 @@ let datas
 let max_itter, total, data_length
 let operande
 
-const fn = (a, b) =>
-  operande === '*'
+const fn = (a, b) => {
+   return operande == '*'
     ? a * b
-    : operande === '+'
+    : operande == '+'
     ? a + b
-    : operande === 'max'
+    : operande == 'max'
     ? Math.max(a, b)
-    : operande === 'min'
+    : operande == 'min'
     ? Math.min(a, b)
     : 0
-
+}
 const calc = (a, b) => (a < 0 ? a + b : a)
 
 const countNegOnes = (arr) => {
@@ -75,7 +75,7 @@ const solve = () => {
       temp = calc(rank - j + 1, data_length) % data_length
       share(rank, right, temp)
     }
-    bool = datas[rank].every((e) => e != -1)
+    bool = datas[total - 1].every((e) => e != -1)
     j++
   }
 }
@@ -86,7 +86,7 @@ const printSolution = () => {
     for (let j = 0; j < data_length; j++) {
       process.stdout.write(` ${datas[i][j]}`)
     }
-    console.log('\n')
+    process.stdout.write('\n')
   }
 }
 
@@ -95,27 +95,25 @@ const rl = readline.createInterface({
   output: process.stdout,
 })
 
-rl.question('', (op) => {
-  rl.question('', (maxItter) => {
-    rl.question('', (totalRealms) => {
-      operande = op
-      max_itter = +maxItter
-      total = +totalRealms
-      caches = new Array(total)
-      datas = new Array(total)
-      let i = 0
-      rl.on('', (input) => {
-        input = input.split(' ').map((e) => +e)
-        datas[input[0]] = input.slice(1)
-        caches[input[0]] = datas[input[0]][input[0]]
-        i++
-        if (i === n) {
-          data_length = datas[0].length
-          solve()
-          printSolution()
-          rl.close()
-        }
-      })
-    })
-  })
-})
+const main = async () => {
+  operande = await new Promise((resolve) => rl.question('', resolve))
+  max_itter = +(await new Promise((resolve) => rl.question('', resolve)))
+  total = +(await new Promise((resolve) => rl.question('', resolve)))
+  caches = new Array(total)
+  datas = new Array(total)
+
+  for (let i = 0; i < total; i++) {
+    input = (await new Promise((resolve) => rl.question('', resolve)))
+      .split(' ')
+      .map((e) => +e)
+    datas[input[0]] = input.slice(1)
+    caches[input[0]] = datas[input[0]][input[0]]
+  }
+  data_length = datas[0].length
+
+  solve()
+  printSolution()
+  rl.close()
+}
+
+main()
