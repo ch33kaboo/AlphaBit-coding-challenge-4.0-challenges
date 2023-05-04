@@ -54,27 +54,6 @@ FUNCTION countNegOnes(arr: array of longint): integer;
         CountNegOnes := count;
     END;
 
-FUNCTION isEqualProcesses(a, b: integer): boolean;
-    VAR 
-        i:integer;
-    BEGIN
-        if ((Length(datas[a]) <> Length(datas[b]))) or (caches[a] <> caches[b]) then
-            BEGIN
-                isEqualProcesses := false;
-                exit;
-            END;
-
-        for i := 0 to High(datas[a]) do
-            BEGIN
-                if datas[a][i] <> datas[b][i] then
-                    BEGIN
-                        isEqualProcesses := false;
-                        exit;
-                    END;
-            END;
-        isEqualProcesses := true;
-    END;
-
 PROCEDURE sendToNext(currentProcessRank, dest_rank, dataIndex:integer);
     BEGIN
     caches[dest_rank] := datas[currentProcessRank][dataIndex];
