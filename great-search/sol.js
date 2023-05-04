@@ -2,8 +2,8 @@ const readline = require('readline')
 
 let caches
 let datas
-let max_itter, total, i, j, data_length, rank, temp2
-let temp, line, operande
+let max_itter, total, data_length
+let operande
 
 const fn = (a, b) =>
   operande === '*'
@@ -16,41 +16,78 @@ const fn = (a, b) =>
     ? Math.min(a, b)
     : 0
 
-const solve = (x, y, n_row, n_col, maze, visit) => {
-  visit[x][y] = 1
-  if (x === 0 || x === n_row - 1 || y === 0 || y === n_col - 1) {
-    //check if current position is possible escape
-    return `${x},${y}`
-  }
-  if (maze[x - 1][y] === '1' && visit[x - 1][y] === 0) {
-    //check if element on top is free and not visited
-    const neighborEscape = solve(x - 1, y, n_row, n_col, maze, visit)
-    if (neighborEscape) {
-      return `${x},${y}-${neighborEscape}`
+const calc = (a, b) => (a < 0 ? a + b : a)
+
+const countNegOnes = (arr) => {
+  let counter = 0
+  for (element of arr) {
+    if (element === -1) {
+      counter++
     }
   }
-  if (maze[x][y + 1] === '1' && visit[x][y + 1] === 0) {
-    //check if element on right is free and not visited
-    const neighborEscape2 = solve(x, y + 1, n_row, n_col, maze, visit)
-    if (neighborEscape2) {
-      return `${x},${y}-${neighborEscape2}`
+  return counter
+}
+
+const sendToNext = (currentProcessRank, dest_rank, dataIndex) => {
+  caches[dest_rank] = datas[currentProcessRank][dataIndex]
+  datas[currentProcessRank][dataIndex] = -1
+}
+
+const share = (currentProcessRank, dest_rank, dataIndex) => {
+  datas[dest_rank][dataIndex] = datas[currentProcessRank][dataIndex]
+}
+
+const solve = () => {
+  let bool
+  let j, right, temp, current_itter
+
+  bool = false
+  j = 0
+  current_itter = 0
+  while (!bool && current_itter < max_itter) {
+    current_itter++
+    for (let rank = 0; rank < total; rank++) {
+      right = (rank + 1) % total
+      sendToNext(rank, right, calc(rank - j, data_length))
+      if (rank != 0) {
+        datas[rank][calc(rank - j - 1, data_length)] = fn(
+          caches[rank],
+          datas[rank][calc(rank - j - 1, data_length)]
+        )
+      }
+      if (rank === total - 1) {
+        datas[0][calc(0 - j - 1, data_length)] = fn(
+          caches[0],
+          datas[0][calc(0 - j - 1, data_length)]
+        )
+      }
+      bool = countNegOnes(datas[rank]) === data_length - 1
     }
+    j++
   }
-  if (maze[x + 1][y] === '1' && visit[x + 1][y] === 0) {
-    //check if element under is free and not visited
-    const neighborEscape3 = solve(x + 1, y, n_row, n_col, maze, visit)
-    if (neighborEscape3) {
-      return `${x},${y}-${neighborEscape3}`
+
+  bool = false
+  j = 0
+  while (!bool && current_itter < max_itter) {
+    current_itter++
+    for (let rank = 0; rank < total; rank++) {
+      right = (rank + 1) % total
+      temp = calc(rank - j + 1, data_length) % data_length
+      share(rank, right, temp)
     }
+    bool = datas[rank].every((e) => e != -1)
+    j++
   }
-  if (maze[x][y - 1] === '1' && visit[x][y - 1] === 0) {
-    //check if element on left is free and not visited
-    const neighborEscape4 = solve(x, y - 1, n_row, n_col, maze, visit)
-    if (neighborEscape4) {
-      return `${x},${y}-${neighborEscape4}`
+}
+
+const printSolution = () => {
+  for (let i = 0; i < total; i++) {
+    process.stdout.write(`${i}`)
+    for (let j = 0; j < data_length; j++) {
+      process.stdout.write(` ${datas[i][j]}`)
     }
+    console.log('\n')
   }
-  return ''
 }
 
 const rl = readline.createInterface({
@@ -58,26 +95,26 @@ const rl = readline.createInterface({
   output: process.stdout,
 })
 
-rl.question('', (n_row) => {
-  rl.question('', (n_col) => {
-    rl.question('', (input_maze) => {
-      rl.question('', (x0) => {
-        rl.question('', (y0) => {
-          //let start = performance.now();
-          n_row = +n_row
-          n_col = +n_col
-          x0 = +x0
-          y0 = +y0
-          maze = []
-          input_maze = input_maze.split(' ')
-          for (let i = 0; i < n_row; i++) {
-            maze.push(input_maze.slice(i * n_col, (i + 1) * n_col))
-          }
-          visit = new Array(n_row).fill().map(() => new Array(n_col).fill(0))
-          console.log(solve(x0, y0, n_row, n_col, maze, visit))
-          //console.log("time in miliseconds: ", (performance.now() - start)/1000)
+rl.question('', (op) => {
+  rl.question('', (maxItter) => {
+    rl.question('', (totalRealms) => {
+      operande = op
+      max_itter = +maxItter
+      total = +totalRealms
+      caches = new Array(total)
+      datas = new Array(total)
+      let i = 0
+      rl.on('', (input) => {
+        input = input.split(' ').map((e) => +e)
+        datas[input[0]] = input.slice(1)
+        caches[input[0]] = datas[input[0]][input[0]]
+        i++
+        if (i === n) {
+          data_length = datas[0].length
+          solve()
+          printSolution()
           rl.close()
-        })
+        }
       })
     })
   })
