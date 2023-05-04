@@ -1,5 +1,3 @@
-import time
-
 def findEscape(x:int ,y:int):
     visit[x][y] = 1
 
@@ -30,18 +28,17 @@ def findEscape(x:int ,y:int):
 
 
 #data
-n_row = 5
-n_col = 6
+n_row = int(input())
+n_col = int(input())
 
 #1 for free and 0 for a wall
 #input_maze = "0 1 0 1 1 1 0 1 0 1 0 1 1 0 0 1 1 0 0 1 1 0 0 1 0"
-input_maze = "0 0 1 0 1 1 0 1 0 1 0 1 0 0 1 1 0 0 0 1 1 0 0 1 0 1 0 0 1 0"
-x0 = 2
-y0 = 3
+input_maze = input()
+x0 = int(input())
+y0 = int(input())
 
 
 
-start = time.time()
 lst = input_maze.split()
 
 """ maze = [[0]*n_col for _ in range(n_row)]
@@ -52,6 +49,4 @@ for i in range(n_row):
 # second method of itterating
 maze = [[lst[i+j] for j in range(n_col)] for i in range(0, n_row*n_col, n_col)]
 visit = [[0 for j in range(n_col)] for i in range(0, n_row*n_col, n_col)]
-print("escape : ",findEscape(x0,y0))
-end = time.time()-start
-print("exec time ", end)
+print(findEscape(x0,y0))
