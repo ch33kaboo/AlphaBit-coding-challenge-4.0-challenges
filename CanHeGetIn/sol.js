@@ -1,32 +1,27 @@
-const isPossible= (n,p,s) => {
-    for(e of p.slice(s[0], s[1])) {
-        if(e>=n) return false
-    }
-    return true
-}
+const readline = require('readline').createInterface({
+    input : process.stdin,
+})
 
-let start = performance.now();
-n = '150'
-p = "130 89 150 73 78 100 122 150 150 150 64 3 0 71"
-s = '0 6'
-n = +n;
-p = p.split(" ").map((e)=>+e);
-s = s.split(" ").map((e)=>+e);
+const input = [];
+let index = 0;
+const limit = 3;
 
-console.log(isPossible(n,p,s));
-console.log("time in miliseconds: ", (performance.now() - start)/1000)
-
-//weirdly same code takes less time here
-let start2 = performance.now();
-n = '150'
-p = "130 89 150 73 78 100 122 150 150 150 64 3 0 71"
-s = '0 6'
-n = +n;
-p = p.split(" ").map((e)=>+e);
-s = s.split(" ").map((e)=>+e);
-
-console.log(isPossible(n,p,s));
-console.log("time in miliseconds: ", (performance.now() - start2)/1000)
-
-
+readline.on('line', line => {
+    input.push(line);
+    index++;
+    if (index == limit) {
+        readline.close()
+        const n = parseInt(input[0]);
+        const s = input[1].split(" ").map(val => parseInt(val))
+        const p = input[2].split(" ").map(val => parseInt(val))
+        
+        for(e of p.slice(s[0], s[1])) {
+            if(e>=n) {
+                console.log("false")
+                return;
+            }
+        }
+        console.log("true")
+    } 
+})
 
