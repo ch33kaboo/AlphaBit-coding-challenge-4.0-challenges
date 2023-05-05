@@ -8,9 +8,10 @@ function findRacines(n) {
     let a = parseInt(Math.sqrt(n));
     let b = n - Math.pow(a, 2);
     array1.push(a);
+    array2.push(b);
     findRacines(a);
     
-      array2.push(b);
+      
       findRacines(b);
     
   }
