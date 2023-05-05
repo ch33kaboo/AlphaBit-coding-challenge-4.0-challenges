@@ -25,7 +25,7 @@ class workers:
     def send(self, current_process:process, dest:int, index:int):
         next_worker = self.get_worker(dest)
         next_worker.cache = current_process.data[index]
-        current_process.data[index] = None
+        current_process.data[index] = -1
 
     def recv(self, current_process:process):
         return current_process.cache
@@ -65,7 +65,7 @@ def ring_all_reduce(function, process_dict : dict, max_iter : int):
                 first_p.data[0-j-1] = function(recieved, first_p.data[0-j-1])
                 print(first_p.data)
             
-            all_reduced = (p.data.count(None) == len(p.data) - 1)
+            all_reduced = (p.data.count(-1) == len(p.data) - 1)
         j += 1
         print("="*24)
 
@@ -85,7 +85,7 @@ def ring_all_reduce(function, process_dict : dict, max_iter : int):
             pr = pr_list.get_worker(r)
             print(f'worker {r}: {pr.data}')
 
-        shared = all(val is not None for val in p.data)
+        shared = all(val != -1 for val in p.data)
             # print(shared)
         k += 1
         print("="*23)
@@ -95,7 +95,9 @@ def ring_all_reduce(function, process_dict : dict, max_iter : int):
 
 def main():
     # redirect the standard input to a file
-    sys.stdin = open('/Users/abdelkrimzitouni/coding-challenge-4.0-challenges/great-search/input.txt', 'r')
+    # sys.stdin = open('/Users/abdelkrimzitouni/coding-challenge-4.0-challenges/great-search/input.txt', 'r')
+
+    operation = str(input())
 
     max_iter = int(input())
     # read in the number of arrays
@@ -111,15 +113,23 @@ def main():
         workers_list.append({})
         workers_list[i]['rank'] = m
         workers_list[i]['data'] = values
+        
 
     def fn(a, b):
-        return a+b
+        if operation == "+":
+            return a+b
+        elif operation == "*":
+            return a*b
+        elif operation == "min":
+            return min(a, b)
+        elif operation == "max":
+            return max(a, b)
 
     p_list = ring_all_reduce(fn, workers_list, max_iter)
     print("\n"+"="*8+"Results"+"="*8)
     for r in range(len(p_list.list)):
         p = p_list.get_worker(r)
-        print(f'worker {r}: {p.data}')
+        print(f"{r} {' '.join(str(d) for d in p.data)}")
 
 if __name__ == "__main__":
     main()

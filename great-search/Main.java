@@ -136,18 +136,19 @@ public class Main {
         }
         return prList;
     }
-    public static BinaryOperator<Integer> sum = (a, b) -> a + b;
+    // public static BinaryOperator<Integer> sum = (a, b) -> a + b;
 
     public static void main(String[] args) throws Exception {
         // redirect the standard input to a file
-        System.setIn(new FileInputStream("/Users/abdelkrimzitouni/coding-challenge-4.0-challenges/great-search/input.txt"));
+        // System.setIn(new FileInputStream("/Users/abdelkrimzitouni/coding-challenge-4.0-challenges/great-search/input.txt"));
         Scanner sc = new Scanner(System.in);
 
+        String operation = sc.nextLine();
         int max_iter = sc.nextInt();
         // System.out.println(max_iter);
         // read in the number of arrays
         int n = sc.nextInt();
-
+        
         List<Map<String, Object>> arrays = new ArrayList<Map<String, Object>>();
         for (int i = 1; i <= n; i++) {
             int m = sc.nextInt();
@@ -161,13 +162,51 @@ public class Main {
             arrays.add(array);
         }
         sc.close();
+        final BinaryOperator<Integer> sum = (a, b) -> a + b;
+        final BinaryOperator<Integer> mul = (a, b) -> a * b;
+        final BinaryOperator<Integer> max = (a, b) -> Math.max(a, b);
+        final BinaryOperator<Integer> min = (a, b) -> Math.min(a, b);
         // print the arrays to verify the input was parsed correctly
         // System.out.println(arrays);
-        Workers allWorkers = ringAllReduce(sum, arrays, max_iter);
-        System.out.println("============Results============");
-        for (int i = 0; i < n; i++) {
-            Process pr = allWorkers.getWorker(i);
-            System.out.printf("worker %d %s\n", pr.rank, Arrays.toString(pr.data.toArray()));
+        Workers allWorkers;
+        if (operation.equals("+")) {
+            allWorkers = ringAllReduce(sum, arrays, max_iter);
+            System.out.println("============Results============");
+            for (int i = 0; i < n; i++) {
+                Process pr = allWorkers.getWorker(i);
+                System.out.printf("worker %d %s\n", pr.rank, Arrays.toString(pr.data.toArray()));
+            }
+        } else if (operation.equals("*")) {
+            allWorkers = ringAllReduce(mul, arrays, max_iter);
+            System.out.println("============Results============");
+            for (int i = 0; i < n; i++) {
+                Process pr = allWorkers.getWorker(i);
+                System.out.printf("worker %d %s\n", pr.rank, Arrays.toString(pr.data.toArray()));
+            }
+        } else if (operation.equals("max")) {
+            allWorkers = ringAllReduce(max, arrays, max_iter);
+            System.out.println("============Results============");
+            for (int i = 0; i < n; i++) {
+                Process pr = allWorkers.getWorker(i);
+                System.out.printf("%d %s\n", pr.rank, Arrays.toString(pr.data.toArray())
+                    .replace("null", "-1")
+                    .replace(",", "")
+                    .replace("[", "")
+                    .replace("]", "")
+                    .replace(":", ""));
+            }
+        } else if
+        (operation.equals("min")) {
+            allWorkers = ringAllReduce(min, arrays, max_iter);
+            System.out.println("============Results============");
+            for (int i = 0; i < n; i++) {
+                Process pr = allWorkers.getWorker(i);
+                System.out.printf("%d ", pr.rank);
+                for (Object val : pr.data.toArray()) {
+                    System.out.printf("%s ", val);
+                }
+                System.out.println();
+            }
         }
     }
 }

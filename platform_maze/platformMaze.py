@@ -8,8 +8,8 @@ maze = [["T", "T", "T", "T", "T", "T"],
            ["T", "T", "T", "T", "T", "T"],
            ["T", "T", "T", "T", "T", "T"]]
 
-hint = [["2", "3,l", "1,l,l"],
-              ["1,r", "2,r,r", "3"],
+hint = [["2,r", "3,l", "1,l,l"],
+              ["3", "2,r,r", "3"],
               ["1,l,l", "3", "2,r"]]
 
 # hint = [["2", "3,l", "2"],
@@ -186,7 +186,7 @@ openSet.append(start)
 if ends :
         while len(openSet) > 0: # Am I still searching ?
 
-                #best next option
+                # Best next option
                 winner = 0
                 for i in range(len(openSet)):
                         if openSet[i].f < openSet[winner].f:
@@ -240,3 +240,54 @@ else:
 
 for l in maze:
         print(l)
+
+graph = []
+v = 1
+for i, line in enumerate(maze_grid):
+    for j, col in enumerate(line):
+            if maze[i][j] != 'X':
+                graph.append({v: (i, j)})
+                v += 1
+
+def findConnectedComponents(graph):
+    visited = list()
+    connectedComponents = []
+    for vertex in graph:
+        if vertex not in visited:
+            # start a new connected component
+            component = list()
+            dfs(vertex, graph, visited, component)
+            connectedComponents.append(component)
+    return connectedComponents
+
+def neighbours(vertex, graph):
+        neigh = []
+        for i, v in enumerate(graph):
+                if v.get(i+1)[0] == list(vertex.values())[0][0]:
+                        if abs(v.get(i+1)[1] - list(vertex.values())[0][1]) == 1:
+                                neigh.append(v)
+                if v.get(i+1)[1] == list(vertex.values())[0][1]:
+                        if abs(v.get(i+1)[0] - list(vertex.values())[0][0]) == 1:
+                                neigh.append(v)
+        return neigh
+        
+
+def dfs(vertex, graph, visited, component):
+    visited.append(vertex)
+    component.append(vertex)
+    for neighbor in neighbours(vertex, graph):
+        if neighbor not in visited:
+            dfs(neighbor, graph, visited, component)
+
+def largestConnectedSubgraph(graph):
+    connectedComponents = findConnectedComponents(graph)
+    largestSubgraph = None
+    largestSize = 0
+    for component in connectedComponents:
+        size = len(component)
+        if size > largestSize:
+            largestSubgraph = component
+            largestSize = size
+    return largestSubgraph
+print("the largest connected subgraph is:\n")
+print(largestConnectedSubgraph(graph))
