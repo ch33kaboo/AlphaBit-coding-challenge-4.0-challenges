@@ -14,6 +14,6 @@ let rl = require('readline').createInterface({
 });
 
 rl.question("", (resistances) => {
-	console.log(optimal(resistances));
+	console.log(optimal(resistances).toFixed(2));
    rl.close();
 });

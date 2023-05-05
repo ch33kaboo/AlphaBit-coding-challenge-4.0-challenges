@@ -8,4 +8,4 @@ def optimal(net):
 
 # result
 resistances = input("enter the string of resistances")
-print(optimal(resistances))
+print("{:.2f}".format(optimal(resistances)))
