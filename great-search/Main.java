@@ -79,7 +79,7 @@ public class Main {
         System.out.println("========Share-reduce phase========");
         while (!allReduced && iter < max_iter) {
             iter += 1;
-            System.out.printf("iteration: %d", iter);
+            System.out.printf("iteration: %d\n", iter);
             for (int r = 0; r < size; r++) {
                 Process p = prList.getWorker(r);
                 int rank = p.rank;
@@ -89,14 +89,14 @@ public class Main {
                 prList.send(p, right, idx);
                 if (rank != 0) {
                     int received = prList.recv(p);
-                    System.out.printf("worker %d %d+%d\n", r, received, p.data.get(Math.floorMod((rank - j - 1), size)));
+                    System.out.printf("worker %d op(%d, %d)\n", r, received, p.data.get(Math.floorMod((rank - j - 1), size)));
                     p.data.set(Math.floorMod((rank - j - 1), size), function.apply(received, p.data.get(Math.floorMod((rank - j - 1), size))));
                     System.out.println(p.data);
                 }
                 if (rank == size - 1) {
                     Process firstP = prList.getWorker(0);
                     int received = prList.recv(firstP);
-                    System.out.printf("worker %d %d+%d\n", firstP.rank, received, firstP.data.get(Math.floorMod((size - j - 1), size)));
+                    System.out.printf("worker %d op(%d, %d)\n", firstP.rank, received, firstP.data.get(Math.floorMod((size - j - 1), size)));
                     firstP.data.set(Math.floorMod((size - j - 1), size), function.apply(received, firstP.data.get(Math.floorMod((size - j - 1), size))));
                     System.out.println(firstP.data);
                 };
@@ -174,14 +174,24 @@ public class Main {
             System.out.println("============Results============");
             for (int i = 0; i < n; i++) {
                 Process pr = allWorkers.getWorker(i);
-                System.out.printf("worker %d %s\n", pr.rank, Arrays.toString(pr.data.toArray()));
+                System.out.printf("%d %s\n", pr.rank, Arrays.toString(pr.data.toArray())
+                    .replace("null", "-1")
+                    .replace(",", "")
+                    .replace("[", "")
+                    .replace("]", "")
+                    .replace(":", ""));
             }
         } else if (operation.equals("*")) {
             allWorkers = ringAllReduce(mul, arrays, max_iter);
             System.out.println("============Results============");
             for (int i = 0; i < n; i++) {
                 Process pr = allWorkers.getWorker(i);
-                System.out.printf("worker %d %s\n", pr.rank, Arrays.toString(pr.data.toArray()));
+                System.out.printf("%d %s\n", pr.rank, Arrays.toString(pr.data.toArray())
+                    .replace("null", "-1")
+                    .replace(",", "")
+                    .replace("[", "")
+                    .replace("]", "")
+                    .replace(":", ""));
             }
         } else if (operation.equals("max")) {
             allWorkers = ringAllReduce(max, arrays, max_iter);
@@ -201,11 +211,12 @@ public class Main {
             System.out.println("============Results============");
             for (int i = 0; i < n; i++) {
                 Process pr = allWorkers.getWorker(i);
-                System.out.printf("%d ", pr.rank);
-                for (Object val : pr.data.toArray()) {
-                    System.out.printf("%s ", val);
-                }
-                System.out.println();
+                System.out.printf("%d %s\n", pr.rank, Arrays.toString(pr.data.toArray())
+                    .replace("null", "-1")
+                    .replace(",", "")
+                    .replace("[", "")
+                    .replace("]", "")
+                    .replace(":", ""));
             }
         }
     }
