@@ -1,4 +1,6 @@
-public class Main {
+package sum_of_power.java;
+
+public class sum_of_power {
     static StringBuilder str1 = new StringBuilder();
     static StringBuilder str2 = new StringBuilder();
 
