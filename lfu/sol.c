@@ -1,9 +1,9 @@
 #include<stdio.h>
 
 int min_arr_non_zero(int *arr, int size) {
-    int min_index = 0;
-    for (int i = 1; i < size; i++) {
-        if (arr[i] != 0 && arr[i] < arr[min_index]) min_index = i;
+    int min_index = -1;
+    for (int i = 0; i < size; i++) {
+        if (arr[i] != 0 && (min_index == -1 || arr[i] < arr[min_index])) min_index = i;
     }
 
     return min_index;
