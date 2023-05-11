@@ -27,7 +27,7 @@ function permute(a, l, r) {
     }
 }
 
-readline.question("Enter a value for n: ", function(n) {
+readline.question("", function(n) {
     nperms(parseInt(n));
     readline.close();
 });
