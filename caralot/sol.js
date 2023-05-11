@@ -50,9 +50,7 @@ readline.on('line', (line) => {
   index++
   if (index == limit) {
     readline.close()
-    const n = parseInt(input[0])
-    const events = input[1].split(' ').map((val) => parseInt(val))
-    const sol = solve(n, events)
+    const sol = solve(input[0], input[1])
     console.log(`${sol[0]}\n${sol[1].join(' ')}`)
   }
 })

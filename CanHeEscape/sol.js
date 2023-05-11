@@ -37,34 +37,29 @@ const solve = (x, y, n_row, n_col, maze, visit) => {
   return ''
 }
 
-const rl = readline.createInterface({
+const readline = require('readline').createInterface({
   input: process.stdin,
-  output: process.stdout,
 })
 
-rl.question('', (n_row) => {
-  rl.question('', (n_col) => {
-    rl.question('', (input_maze) => {
-      rl.question('', (x0) => {
-        rl.question('', (y0) => {
-          //let start = performance.now();
-          n_row = +n_row
-          n_col = +n_col
-          x0 = +x0
-          y0 = +y0
-          maze = []
-          input_maze = input_maze.split(' ')
-          for (let i = 0; i < n_row; i++) {
-            maze.push(input_maze.slice(i * n_col, (i + 1) * n_col))
-          }
-          visit = new Array(n_row)
-            .fill()
-            .map(() => new Array(n_col).fill(0))
-          console.log(solve(x0, y0, n_row, n_col, maze, visit))
-          //console.log("time in miliseconds: ", (performance.now() - start)/1000)
-          rl.close()
-        })
-      })
-    })
-  })
+const input = []
+let index = 0
+const limit = 5
+
+readline.on('line', (line) => {
+  input.push(line)
+  index++
+  if (index == limit) {
+    readline.close()
+    const n_row = parseInt(input[0])
+    const n_col = parseInt(input[1])
+    const x0 = parseInt(input[3])
+    const y0 = parseInt(input[4])
+    maze = []
+    input_maze = input[2].split(' ')
+    for (let i = 0; i < n_row; i++) {
+      maze.push(input_maze.slice(i * n_col, (i + 1) * n_col))
+    }
+    visit = new Array(n_row).fill().map(() => new Array(n_col).fill(0))
+    console.log(solve(x0, y0, n_row, n_col, maze, visit))
+  }
 })
