@@ -73,7 +73,6 @@ def main():
         n, m = input().split()
         n, m = int(n), int(m)
         maze = []
-        print(n, m)
         for i in range(n):
                 maze.append(input().split())
 

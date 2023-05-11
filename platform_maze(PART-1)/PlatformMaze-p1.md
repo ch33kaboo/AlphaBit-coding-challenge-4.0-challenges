@@ -20,7 +20,6 @@ When you reach the platform maze, pay attention to the symbol. As importantly, y
 # Your task
 Your task is to:
 -  First find all the skull platforms as shown in the picture above by putting `"X"` in the corresponding cell in  the matrix `maze`.
-- And then find the shortest path if there is a path.
 
 ## Example:
 ```py
@@ -56,7 +55,7 @@ Where:
    * `m` times the character "T" (which means tale).
  * The next line (n+1)  is the number of rows `n' = n/2` and columns `m' = m/2` respectively of the `hint` matrix.
  * The next `n'` lines contain:
-   * `m'` characters that are either "T" (Tale) or "X" (Marked tale).
+   * `m'` unlimited comma separated values.
 
 **The marked matrix would be:**
 ```
@@ -67,6 +66,8 @@ X T X X X X
 X T T X T X
 T T X X T X
 ```
+Where:
+ * Each line contains characters that are either "T" (Tale) or "X" (Marked tale).
 
 ## Data types:
  - `maze`, `hint`: matrix of char
@@ -74,3 +75,5 @@ T T X X T X
 ## Constraints
 - The number of `"l"` or `"r"` in a signle group of four tiles isnt limmited and they may appear together at any order.
 - mark the skull platforms by capital "X".
+
+## See you in part 2...

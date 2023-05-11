@@ -83,5 +83,6 @@ Where for each line:
 
 # Constraints
 - `data` length is equal to the realms number for simplicity.
-
 - Each `rank` is unique.
+
+## Let's meet up in the platform maze warior!

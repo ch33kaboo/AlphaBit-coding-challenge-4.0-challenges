@@ -3,7 +3,6 @@ def main():
         n, m = input().split()
         n, m = int(n), int(m)
         marked_maze = []
-        print(n, m)
         for i in range(n):
                 marked_maze.append(input().split())
         
@@ -55,8 +54,12 @@ def main():
                                 largestSubgraph = component
                                 largestSize = size
                 return largestSubgraph
-        print("the largest connected subgraph is:\n")
-        print(largestConnectedSubgraph(graph))
+        # print("the largest connected subgraph is:\n")
+        lcsg = largestConnectedSubgraph(graph)
+        print(len(lcsg))
+        sorted_lcsg = sorted(lcsg, key=lambda x: (x[list(x.keys())[0]][0], -x[list(x.keys())[0]][1]))
+        for e in sorted_lcsg:
+                print(f"{e[list(e.keys())[0]][0]} {e[list(e.keys())[0]][1]}")
 
 if __name__ == "__main__":
     main()

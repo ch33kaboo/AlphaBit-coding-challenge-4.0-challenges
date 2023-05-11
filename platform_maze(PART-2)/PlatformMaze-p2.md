@@ -1,71 +1,53 @@
-# Platform Maze
+# Platform Maze (Part 2)
 
 ## Scenario
-During the **Great search**, in the realm of **Midgard**, you are one step away from finding the **Sightstone**, one of the nine artifacts of the Eye of Odin. 
+With the knowledge you gained from localizing all the trap platforms within the treacherous maze of **Midgard**, you set your sights on the next crucial objective: finding the largest connected subgraph among the remaining platforms.
 
-You have to find the shortest path through a platform maze, each tile in the maze could be a trap and make an end to your journey. luckily you found a letter, flipped it over for a set of diagrams, that will help you navigate the upcoming platform maze.
+As you carefully examine the matrix representing the maze, you realize that the key lies in identifying the interconnected sections. A connected subgraph consists of a subset of platforms that are directly connected to each other through horizontal or vertical edges. By traversing these connected platforms, you can navigate the maze efficiently and bypass potential dangers.
 
-### Platform maze
-![](./Maze.png)
-### Hint letter
-![](./platform%20maze_1.png)
-
-
-## Problem
-Given `maze` an `n x m` matrix  representing the platform maze, and `hint` is the hint matrix `(n/2 x m/2)` containing the symbols in the middle of each grouping of four tiles.  
-
-When you reach the platform maze, pay attention to the symbol. As importantly, you also need to consider which direction each symbol is facing, For example:
-- `"l"` means that the group of four tiles is rotated by 90° to the left.
 
 # Your task
-Your task is to:
--  First find all the skull platforms as shown in the picture above by putting `"X"` in the corresponding cell in  the matrix `maze`.
-- And then find the shortest path if there is a path.
+Given `marked_maze` which represent the output of the **Platform Maze (Part 1)** challenge. Your task is to find the largest connected sub-graph in the maze.
 
 ## Example:
-```py
- - maze = [["T", "T", "T", "T", "T", "T"],
-            ["T", "T", "T", "T", "T", "T"],
-            ["T", "T", "T", "T", "T", "T"],
-            ["T", "T", "T", "T", "T", "T"],
-            ["T", "T", "T", "T", "T", "T"],
-            ["T", "T", "T", "T", "T", "T"]]
-
-- hint = [["2", "3,l", "1,l,l"],
-            ["1,r", "2,r,r", "3"],
-            ["1,l,l", "3", "2,r"]]
- ```
-
-The marked matrix would be:
-```py
-marked
-['X', 'X', 'X', 'X', 'X', 'T']
-['T', 'T', 'T', 'X', 'T', 'T']
-['T', 'T', 'T', 'T', 'T', 'X']
-['X', 'T', 'X', 'X', 'X', 'X']
-['X', 'T', 'T', 'X', 'T', 'X']
-['T', 'T', 'X', 'X', 'T', 'X']
+**Given this input:**
 ```
-
-The shortest path is marked by "P" as follows:
-```py
-['X', 'X', 'X', 'X', 'X', 'P']
-['T', 'T', 'T', 'X', 'P', 'T']
-['T', 'T', 'P', 'P', 'T', 'X']
-['X', 'P', 'X', 'X', 'X', 'X']
-['X', 'P', 'T', 'X', 'T', 'X']
-['P', 'T', 'X', 'X', 'T', 'X']
+X X X X X T
+T T T X T T
+T T T T T X
+X T X X X X
+X T T X T X
+T T X X T X
 ```
+Where:
+ * Each line contains characters that are either "T" (Tale) or "X" (Marked tale).
+
+**The largest connected sub graph is:**
+```
+16
+0 5
+1 5
+1 4
+2 4
+2 3
+2 2
+1 2
+1 1
+1 0
+2 0
+2 1
+3 1
+4 1
+4 2
+5 1
+5 0
+```
+Where:
+ * The first line is the number `n` of nodes in the graph.
+ * The next `n` lines containes the row index and column index respectively.
 
 ## Data types:
- - `maze`, `hint`: matrix of char
+ - `marked_maze`: matrix of char
 
 ## Constraints
-- The number of `"l"` or `"r"` in a signle group of four tiles isn't limmited and they may appear together at any order.
-- mark the skull platforms by capital "X"
-- mark the path by capital "P"
-- Consider diagonals when searching for the path.
-- The start point is the first 
-non-marked element in the last row of the matrix `maze` (left to right)
-- The finish point is the first 
-non-marked element in the first row of the matrix `maze` (left to right)
+- Notice that the row indexes are sorted `asc` and column indexes are sorted `desc`!
