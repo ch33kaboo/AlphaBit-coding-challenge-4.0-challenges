@@ -31,14 +31,14 @@ def find_string_location(M, S):
 # Read matrix row by row from user input
 M = []
 while True:
-    row_str = input("Enter row (blank line to stop): ")
+    row_str = input()
     if not row_str:
         break
     row = list(row_str)
     M.append(row)
 
 # Read word to search from user input
-S = input("Enter word to search: ")
+S = input()
 
 # Find location of word in matrix
 result = find_string_location(M, S)
