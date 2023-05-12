@@ -78,11 +78,6 @@ def main():
         hint = []
         for i in range(nh):
                 hint.append(input().split())
-        print("unmarked")
-        for l in maze:
-                print(l)
-        print("\n"+"="*8)
-
 
         for i_line, line in enumerate(hint):
                 for i_col, col in enumerate(line):

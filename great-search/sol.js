@@ -1,4 +1,29 @@
-const readline = require('readline')
+/* Common Template Starts */
+process.stdin.resume()
+process.stdin.setEncoding('utf-8')
+let inputString = ''
+let currentLine = 0
+
+process.stdin.on('data', (inputStdin) => {
+  inputString += inputStdin
+})
+
+process.stdin.on('end', (_) => {
+  inputString = inputString
+    .trim()
+    .split('\n')
+    .map((string) => {
+      return string.trim()
+    })
+
+  main()
+})
+
+function readline() {
+  return inputString[currentLine++]
+}
+/* Common Template Ends */
+
 
 let caches
 let datas
@@ -6,7 +31,7 @@ let max_itter, total, data_length
 let operande
 
 const fn = (a, b) => {
-   return operande == '*'
+  return operande == '*'
     ? a * b
     : operande == '+'
     ? a + b
@@ -90,22 +115,17 @@ const printSolution = () => {
   }
 }
 
-const rl = readline.createInterface({
-  input: process.stdin,
-  output: process.stdout,
-})
-
-const main = async () => {
-  operande = await new Promise((resolve) => rl.question('', resolve))
-  max_itter = +(await new Promise((resolve) => rl.question('', resolve)))
-  total = +(await new Promise((resolve) => rl.question('', resolve)))
+function main() {
+  operande = readline()
+  max_itter = +readline()
+  total = +readline()
   caches = new Array(total)
   datas = new Array(total)
 
   for (let i = 0; i < total; i++) {
-    input = (await new Promise((resolve) => rl.question('', resolve)))
+    input = readline()
       .split(' ')
-      .map((e) => +e)
+      .map(Number)
     datas[input[0]] = input.slice(1)
     caches[input[0]] = datas[input[0]][input[0]]
   }
@@ -113,7 +133,4 @@ const main = async () => {
 
   solve()
   printSolution()
-  rl.close()
 }
-
-main()

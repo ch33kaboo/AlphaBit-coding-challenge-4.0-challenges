@@ -1,4 +1,28 @@
-const readline = require('readline')
+/* Common Template Starts */
+process.stdin.resume()
+process.stdin.setEncoding('utf-8')
+let inputString = ''
+let currentLine = 0
+
+process.stdin.on('data', (inputStdin) => {
+  inputString += inputStdin
+})
+
+process.stdin.on('end', (_) => {
+  inputString = inputString
+    .trim()
+    .split('\n')
+    .map((string) => {
+      return string.trim()
+    })
+
+  main()
+})
+
+function readline() {
+  return inputString[currentLine++]
+}/*Common Template Ends */
+
 
 const neighboors = (vertex, graph) => {
   const neigh = []
@@ -59,24 +83,15 @@ const largestConnectedSubgraph = (graph) => {
   return largestSubgraph
 }
 
-const rl = readline.createInterface({
-  input: process.stdin,
-  output: process.stdout,
-})
-
-const main = async () => {
-  const [n, m] = (await new Promise((resolve) => rl.question('', resolve)))
-    .split(' ')
+const main = () => {
+  const [n, m] = readline().split(' ')
     .map(Number)
 
   const marked_maze = []
   for (let i = 0; i < n; i++) {
-    const input = (
-      await new Promise((resolve) => rl.question('', resolve))
-    ).split(' ')
+    const input = readline().split(' ')
     marked_maze.push(input)
   }
-  rl.close()
 
   const graph = []
   let v = 1
@@ -111,5 +126,3 @@ const main = async () => {
     console.log(value[0] + ' ' + value[1])
   }
 }
-
-main()

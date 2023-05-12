@@ -1,5 +1,3 @@
-const readline = require('readline')
-
 const solve = (x, y, n_row, n_col, maze, visit) => {
   visit[x][y] = 1
   if (x === 0 || x === n_row - 1 || y === 0 || y === n_col - 1) {
