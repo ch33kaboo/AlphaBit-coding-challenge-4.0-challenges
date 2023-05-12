@@ -1,10 +1,4 @@
-import math
-import os
-import random
-import re
-import sys
 
-# Complete the isValid function below.
 def isValid(s):
     # Go over string and count how many times string occured
     char_dict = {}
@@ -38,3 +32,4 @@ def isValid(s):
             return 'YES'
     return 'NO'
 
+print(isValid(input()))
