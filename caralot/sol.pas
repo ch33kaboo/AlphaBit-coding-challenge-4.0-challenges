@@ -118,6 +118,6 @@ BEGIN
     result := solve(nString, events);
     writeln(result.len);
     for i := 0 to High(result.res) do
-        write(result.res[i], ' ');
-    writeln()
+        if i < High(result.res) then write(result.res[i], ' ')
+        else write(result.res[i])
 END.
