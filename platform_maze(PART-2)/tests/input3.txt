@@ -1,5 +1,25 @@
-10
-10
-0 0 1 0 1 1 0 1 0 1 1 1 0 0 1 1 0 0 0 1 1 1 0 1 0 1 0 0 1 0 0 1 1 0 1 0 0 1 0 1 0 1 1 0 1 0 0 1 0 1 0 0 1 1 1 1 0 0 0 1 1 0 0 1 0 1 0 0 1 0 0 0 1 0 1 1 1 1 0 1 0 1 0 0 0 0 0 1 0 1 0 1 0 0 0 0 0 1 0 1 0 1 0 0 0 0 0 0 0 1
-8
-7
+24 24
+X X X X X T T T T T T T X X X X X T T T T T T T
+T T T X T T X X X T X T T T T X T T X X X T X T
+T T T T T X X T T T T X X X X X X T T T T T T T
+X T X X X X T T X T T X T T T X T T X X X T X T
+X T T X T X X X T T X T T T T T T X X T T T T X
+T T X X T X X T X T X X X T X X X X T T X T T X
+X X X X X T X X T T T T T T T T T X X T T T T X
+T T T X T T X T X T X T X T X X X X T T X T T X
+T T T T T X T T T T X T T T T T T X T T T T X T
+X T X X X X X X X T X X X T X X X X X X X T X X
+X T T X T X X T T T T X X X X X X T X X T T T T
+T T X X T X T T X T T X T T T X T T X T X T X T
+X X X X X T T T T T T T X X X X X T X X T T T T
+T T T X T T X X X T X T T T T X T T X T X T X T
+T T T T T X X T T T T X X X X X X T X X T T T T
+X T X X X X T T X T T X T T T X T T X T X T X T
+X T T X T X X X T T X T X X X X X T X X T T T T
+T T X X T X X T X T X X T T T X T T X T X T X T
+X X X X X T X X T T T T X X X X X T X X T T T T
+T T T X T T X T X T X T T T T X T T X T X T X T
+T T T T T X T T T T X T X X X X X T X X T T T T
+X T X X X X X X X T X X T T T X T T X T X T X T
+X T T X T X X T T T T X X X X X X T X X T T T T
+T T X X T X T T X T T X T T T X T T X T X T X T
