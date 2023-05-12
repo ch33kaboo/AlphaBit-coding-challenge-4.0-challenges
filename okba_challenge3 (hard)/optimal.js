@@ -13,7 +13,7 @@ let rl = require('readline').createInterface({
   output: process.stdout
 });
 
-rl.question("", (resistances) => {
+rl.on("line", (resistances) => {
+	rl.close();
 	console.log(optimal(resistances).toFixed(2));
-   rl.close();
 });
