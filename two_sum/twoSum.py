@@ -13,7 +13,7 @@ def two_sum(nums, target):
 
 arr  = list(map(int, input().split()))
 
-target = int(input("Enter The Target "))
+target = int(input())
 print("")
 
 print(two_sum(arr, target))
