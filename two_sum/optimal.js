@@ -1,6 +1,5 @@
 const readline = require('readline').createInterface({
-    input: process.stdin,
-    output: process.stdout
+    input: process.stdin
 });
 
 let target;
@@ -8,7 +7,7 @@ let arr;
 
 readline.question('Enter target value: ', (value) => {
     target = parseInt(value);
-    readline.question('Enter array values separated by space: ', (values) => {
+    readline.on('line', (values) => {
         arr = values.split(' ').map(Number);
         twoSumOptimized(arr, target);
         readline.close();
