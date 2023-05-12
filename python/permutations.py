@@ -2,7 +2,7 @@ def nperms (n):
     a = []
     for i in range(1,n+1):
         a.append(str(i))
-    permute(a,0,len(a))
+    return permute(a,0,len(a))
 
 
 def toString(List):
@@ -17,3 +17,5 @@ def permute(a, l, r):
             permute(a, l+1, r)
             a[l], a[i] = a[i], a[l]  # backtrack
 
+
+nperms(int(input()))
