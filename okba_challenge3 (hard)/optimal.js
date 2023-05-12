@@ -9,11 +9,10 @@ function optimal(net) {
 
 //result
 let rl = require('readline').createInterface({
-  input: process.stdin,
-  output: process.stdout
+  input: process.stdin
 });
 
-rl.question("", (resistances) => {
+rl.on("line", (resistances) => {
+	rl.close();
 	console.log(optimal(resistances).toFixed(2));
-   rl.close();
 });

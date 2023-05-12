@@ -37,5 +37,6 @@ public class sol {
         Scanner scanner = new Scanner(System.in);
         int n = scanner.nextInt();
         nperms(n);
+        scanner.close();
     }
 }
