@@ -1,17 +1,19 @@
-def twoSumOptimized(array, target):
-    
+def two_sum(nums, target):
     lookup = {}
-        
-    for i in range(len(array)):
-
-        complement = target - array[i]
-            
+    pairs = []
+    for i, num in enumerate(nums):
+        complement = target - num
         if complement in lookup:
+            pairs.append([lookup[complement], i])
+        lookup[num] = i
+    return pairs
 
-            return lookup[complement], i
-                
-              
-        lookup[array[i]] = i
-            
 
-    return None
+print("Enter elements of the array separated by space: ")
+
+arr  = list(map(int, input().split()))
+
+target = int(input("Enter The Target "))
+print("")
+
+print(two_sum(arr, target))
