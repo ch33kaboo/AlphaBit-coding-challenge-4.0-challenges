@@ -10,10 +10,7 @@ def two_sum(nums, target):
 
 
 
-
-arr  = list(map(int, input().split()))
-
 target = int(input())
-
+arr  = list(map(int, input().split()))
 
 print(two_sum(arr, target))
