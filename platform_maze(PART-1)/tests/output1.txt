@@ -1,1 +1,6 @@
-2,3-2,2-3,2-3,1-4,1
+X X X X X T
+T T T X T T
+T T T T T X
+X T X X X X
+X T T X T X
+T T X X T X
