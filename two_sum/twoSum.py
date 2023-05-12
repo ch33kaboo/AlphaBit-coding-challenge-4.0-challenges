@@ -9,7 +9,7 @@ def two_sum(nums, target):
     return pairs
 
 
-print("Enter elements of the array separated by space: ")
+
 
 arr  = list(map(int, input().split()))
 
