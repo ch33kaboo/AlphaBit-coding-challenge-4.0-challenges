@@ -9,8 +9,7 @@ function optimal(net) {
 
 //result
 let rl = require('readline').createInterface({
-  input: process.stdin,
-  output: process.stdout
+  input: process.stdin
 });
 
 rl.on("line", (resistances) => {
