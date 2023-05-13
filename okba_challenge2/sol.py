@@ -21,5 +21,5 @@ def to_array_of_bytes(string):
         arr.append(convert_coefficient * string_value / 8 if is_bit else convert_coefficient * string_value)
     return arr
 
-volumes = input("enter the string of the units")
+volumes = input("")
 print(to_array_of_bytes(volumes))
