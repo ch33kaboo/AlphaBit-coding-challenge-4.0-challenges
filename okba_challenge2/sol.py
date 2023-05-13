@@ -18,8 +18,12 @@ def to_array_of_bytes(string):
                 convert_coefficient = 2**40
         else:
             string_value = int(ele[:-1])
-        arr.append(convert_coefficient * string_value / 8 if is_bit else convert_coefficient * string_value)
-    return arr
+        value = convert_coefficient * string_value / 8 if is_bit else convert_coefficient * string_value
+        if is_bit and value.is_integer():
+            arr.append(int(value))
+        else:
+            arr.append(value)
+    return " ".join(map(str, arr))
 
 volumes = input("")
 print(to_array_of_bytes(volumes))
