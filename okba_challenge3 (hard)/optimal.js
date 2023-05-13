@@ -12,6 +12,7 @@ let rl = require('readline').createInterface({
   input: process.stdin
 });
 
+
 rl.on("line", (resistances) => {
 	rl.close();
 	console.log(optimal(resistances).toFixed(2));
