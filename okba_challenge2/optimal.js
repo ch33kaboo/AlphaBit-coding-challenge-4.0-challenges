@@ -1,4 +1,4 @@
-const volumes = '13GB 13gb 1b 1B' //B BYTE and b bit
+const volumes = "5b 5B 3TB 2Tb" //B BYTE and b bit
 
 
 function toArrayOfBytes(str) {
@@ -37,8 +37,9 @@ function toArrayOfBytes(str) {
         arr.push((isBit) ? convertCoefficient * stringValue * 1/8 : convertCoefficient * stringValue);
     })  
       
-    return arr;
+    return arr.join(' ');
 }
+
 
 let rl = require('readline').createInterface({
     input: process.stdin
