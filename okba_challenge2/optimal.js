@@ -41,11 +41,10 @@ function toArrayOfBytes(str) {
 }
 
 let rl = require('readline').createInterface({
-    input: process.stdin,
-    output: process.stdout
+    input: process.stdin
   });
   
-rl.question("", (volumes) => {
-    console.log(toArrayOfBytes(volumes));
+rl.on("line", (volumes) => {
     rl.close();
+    console.log(toArrayOfBytes(volumes));
 });
