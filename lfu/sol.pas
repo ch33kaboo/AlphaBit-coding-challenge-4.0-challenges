@@ -2,9 +2,11 @@ function minNonZero(arr : Array of integer):integer;
     var min_index : integer;
         i : integer;
 begin
-    min_index := 0;
-    for i:=1 to Length(arr) - 1 do
-        if (arr[i] <> 0) and (arr[i] < arr[min_index]) then
+
+    // find min non zero index
+    min_index := -1;
+    for i:=0 to Length(arr) - 1 do
+        if (arr[i] <> 0) and((min_index = -1) or (arr[i] < arr[min_index])) then
             min_index := i;
     minNonZero := min_index;
 end;

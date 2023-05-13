@@ -51,11 +51,10 @@ function stupid (str) {
 
 //result
 let rl = require('readline').createInterface({
-    input: process.stdin,
-    output: process.stdout
+    input: process.stdin
   });
   
-rl.question("", (myString) => {
-    console.log(stupid(myString));
+rl.on("line", (myString) => {
     rl.close();
+    console.log(stupid(myString));
 });

@@ -1,9 +1,9 @@
 #include<stdio.h>
 
 int min_arr_non_zero(int *arr, int size) {
-    int min_index = 0;
-    for (int i = 1; i < size; i++) {
-        if (arr[i] != 0 && arr[i] < arr[min_index]) min_index = i;
+    int min_index = -1;
+    for (int i = 0; i < size; i++) {
+        if ((arr[i] != 0) && ((min_index == -1) || (arr[i] < arr[min_index]))) min_index = i;
     }
 
     return min_index;
@@ -11,27 +11,31 @@ int min_arr_non_zero(int *arr, int size) {
 
 int main(int argc, char const *argv[])
 {
-    int max_capacity;
-    scanf("%d", &max_capacity);
     int weights[32];
     int uses[32];
+    char c; // for reading space/newline
+    int max_capacity;
+    scanf("%d%c", &max_capacity,&c);
+
     int weights_length = 0;
     int uses_length = 0;
-    char c;
 
     for (int i = 0; i < 32; i++)
     {
         int flag = scanf("%d%c", &weights[i], &c);
-        if (c == '\n' || flag == EOF) {
+        if (c == '\n' || flag != 2) {
             weights_length = i + 1;
             break;
         };
     }
 
+    // scanf("%c", &c);
+
     for (int i = 0; i < 32; i++)
     {
         int flag = scanf("%d%c", &uses[i], &c);
-        if (c == '\n' || flag == EOF) {
+
+        if (c == '\n' || flag != 2) {
             uses_length = i + 1;
             break;
         };

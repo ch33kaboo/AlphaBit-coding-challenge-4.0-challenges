@@ -42,9 +42,9 @@ public class sol {
     }
 
     public static int minNonZero(int[] array) {
-        int min = 0;
-        for (int i = 1; i < array.length; i++) {
-            if (array[i] != 0 && array[i] < array[min])
+        int min = -1;
+        for (int i = 0; i < array.length; i++) {
+            if (array[i] != 0 && (min == -1 || array[i] < array[min]))
                 min = i;
         }
 
