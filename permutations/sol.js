@@ -1,6 +1,5 @@
 const readline = require("readline").createInterface({
-    input: process.stdin,
-    output: process.stdout
+    input: process.stdin
 });
 
 function nperms(n) {
@@ -32,7 +31,7 @@ function toString(List) {
 }
 
 
-readline.question("", function(n) {
+readline.on("line", function(n) {
     nperms(parseInt(n));
     readline.close();
 });
