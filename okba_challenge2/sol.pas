@@ -1,42 +1,29 @@
-uses sysutils,
-    StrUtils,
-    Types;
+def to_array_of_bytes(string):
+    arr = []
+    for ele in string.split(' '):
+        convert_coefficient = 1
+        string_value = 0
+        is_bit = (ele.find('b') != -1)  # if it's a bit true else false it's a byte
+        before_last_char = ord(ele[-2])
+        if not 48 <= before_last_char <= 57:  # check the before last character if it's K/G/T/K or number
+            string_value = int(ele[:-2])
+            char = ele[-2].upper()
+            if char == 'K':  # kilo
+                convert_coefficient = 2**10
+            elif char == 'M':  # mega
+                convert_coefficient = 2**20
+            elif char == 'G':  # giga
+                convert_coefficient = 2**30
+            elif char == 'T':  # tera
+                convert_coefficient = 2**40
+        else:
+            string_value = int(ele[:-1])
+        value = convert_coefficient * string_value / 8 if is_bit else convert_coefficient * string_value
+        if is_bit and value.is_integer():
+            arr.append(int(value))
+        else:
+            arr.append(value)
+    return " ".join(map(str, arr))
 
-procedure sol(items: TStringDynArray);
-    var item : String;
-        item_int : Int64;
-        is_bit : boolean;
-        unit_char : Char;
-begin
-
-    for item in items do
-    begin
-    is_bit := item[Length(item)] = 'b';
-    if ((ord(item[Length(item) - 1]) >= ord('0')) and (ord(item[Length(item) - 1]) <= ord('9'))) then
-    begin
-        item_int := StrToInt(Copy(item, 1, Length(item) - 1));
-        unit_char := ' ';
-    end else begin
-        item_int := StrToInt(Copy(item, 1, Length(item) - 2));
-        unit_char := item[Length(item) - 1];
-    end;
-
-    case unit_char of
-        'K' : item_int := item_int * 1024;
-        'M' : item_int := item_int * 1024 * 1024;
-        'G' : item_int := item_int * 1024 * 1024 * 1024;
-        'T' : item_int := item_int * 1024 * 1024 * 1024 * 1024;
-    end;
-    if(is_bit) then write(Format('%g', [item_int / 8]), ' ')
-        else write(item_int, ' ');
-    end;
-    writeln;
-
-end;
-
-var
-    input_str : String;
-begin
-    readln(input_str);
-    sol(SplitString(input_str, ' '));
-end.
+volumes = input("")
+print(to_array_of_bytes(volumes))
