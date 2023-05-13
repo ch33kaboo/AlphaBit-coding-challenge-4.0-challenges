@@ -1,10 +1,11 @@
+import java.text.DecimalFormat;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Scanner;
 
 public class Sol {
 
-    public static List<Double> toArrayOfBytes(String str) {
+    public static String toArrayOfBytes(String str) {
         boolean isBit; // false bit, true byte
         double convertCoefficient; // depends if it's giga, tera, ...
         double stringValue; // string value parsed to integer
@@ -20,19 +21,19 @@ public class Sol {
                 stringValue = Integer.parseInt(ele.substring(0, ele.length() - 2));
                 switch (Character.toUpperCase(ele.charAt(ele.length() - 2))) {
                     case 'K': // kilo
-                        convertCoefficient = (double) Math.pow(2, 10);
+                        convertCoefficient = Math.pow(2, 10);
                         break;
 
                     case 'M': // mega
-                        convertCoefficient = (double) Math.pow(2, 20);
+                        convertCoefficient = Math.pow(2, 20);
                         break;
 
                     case 'G': // giga
-                        convertCoefficient = (double) Math.pow(2, 30);
+                        convertCoefficient = Math.pow(2, 30);
                         break;
 
                     case 'T': // tera
-                        convertCoefficient = (double) Math.pow(2, 40);
+                        convertCoefficient = Math.pow(2, 40);
                         break;
                 }
             } else {
@@ -41,12 +42,21 @@ public class Sol {
             arr.add((isBit) ? convertCoefficient * stringValue * 1 / 8 : convertCoefficient * stringValue);
         }
 
-        return arr;
+        StringBuilder result = new StringBuilder();
+        DecimalFormat decimalFormat = new DecimalFormat("#.########");
+        decimalFormat.setGroupingUsed(false);
+        for (double value : arr) {
+            if (value == (int) value) {
+                result.append(decimalFormat.format(value)).append(" ");
+            } else {
+                result.append(decimalFormat.format(value)).append(" ");
+            }
+        }
+        return result.toString().trim();
     }
 
     public static void main(String[] args) {
         Scanner scanner = new Scanner(System.in);
-        System.out.print("Enter a string: ");
         String volumes = scanner.nextLine();
         System.out.println(toArrayOfBytes(volumes));
         scanner.close();
