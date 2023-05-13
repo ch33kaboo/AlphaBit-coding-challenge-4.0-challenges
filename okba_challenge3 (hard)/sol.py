@@ -7,5 +7,5 @@ def optimal(net):
     return eval(net.replace('(', 'serie(').replace('[', 'parallel(').replace(']', ')'))
 
 # result
-resistances = input("enter the string of resistances")
+resistances = input("")
 print("{:.2f}".format(optimal(resistances)))
