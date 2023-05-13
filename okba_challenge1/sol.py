@@ -28,5 +28,5 @@ def optimal (str):
 
     return capitalVowels + smallDiv4 + capitalContstantes + capitalDiv4 + digits + symboles + smallVowels + smallConstantes
 
-myString = input("enter the string to sort")
+myString = input("")
 print(optimal(myString))
