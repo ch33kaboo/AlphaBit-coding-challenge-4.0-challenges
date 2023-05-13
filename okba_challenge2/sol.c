@@ -48,6 +48,10 @@ int main()
                     break;
             }
         }
+        else if (toupper(s[strlen(s) - 1]) == 'T')
+        {
+            x = x * 1024 * 1024 * 1024 * 1024;
+        }
 
         // print the results with correct formatting
         if (i != arr_length - 1)
